@@ -1,117 +1,87 @@
-# 🌏 Cultural Etiquette Advisor AI
+# Cultural Etiquette Advisor AI
 
-**⚠️ For Evaluation / Portfolio Purposes Only ⚠️**
+[![License: All Rights Reserved](https://img.shields.io/badge/License-AllRightsReserved-red.svg)](LICENSE)
 
-This project is a personal portfolio piece designed for technical assessment and recruiter review. The source code and assets are not licensed for public use, redistribution, or commercial deployment.
-
----
-
-## ✨ Key Features
-
-- **📍 Location-Aware Context**: Automatically detects locations in your queries and pulls relevant cultural data (Greetings, Dining, Business, Gifting) from a local database.
-- **🤖 Hybrid AI Engine**: Combines a structured local knowledge base with the power of Large Language Models for accurate and nuanced responses.
-- **💬 Chat History & Persistence**: Managed sessions with full history tracking, allowing you to resume conversations anytime.
-- **🎨 Glassmorphism UI**: A modern, responsive interface featuring a sleek sidebar, typing indicators, and smooth message rendering.
-- **🔒 Secure Authentication**: Built-in user registration and login system to keep your chat history private.
-- **🚀 Advanced NLP**: Integrates `spacy` for sophisticated location extraction and intent recognition.
+> 🚫 **This project is intended for demonstration purposes only. Reuse, modification, or redistribution of this code is not permitted without written permission from the author.**
 
 ---
 
-## 🛠️ Tech Stack
+A sophisticated, location-aware AI chatbot developed as part of my BCA final year mini project using Django and advanced LLM integration.
 
-- **Backend**: Python 3.x, Django 5.1.x
-- **Frontend**: Vanilla CSS (Glassmorphism), JavaScript (AJAX/Fetch API)
-- **AI/LLM**: Meta Llama 3.1 (via NVIDIA API), Google Gemini (Optional Fallback)
-- **Database**: SQLite (Development) / MySQL (Production Ready)
-- **NLP**: Spacy, Regex
-- **Environment**: python-dotenv for secure key management
+![Project Banner](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/raw/main/front_image.png)
 
 ---
 
-## 🚀 Getting Started
+## Overview
 
-### 1. Prerequisites
-- Python 3.10+ installed
-- A Virtual Environment (recommended)
-
-### 2. Clone the Repository
-```bash
-git clone https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai.git
-cd cultural-etiquette-advisor-ai
-```
-
-### 3. Install Dependencies
-```bash
-# It is recommended to use a virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-pip install -r cultural_advisor/requirements.txt
-```
-
-### 4. Configure Environment Variables
-Create a `.env` file in the `cultural_advisor/` directory:
-```env
-NVIDIA_API_KEY=your_nvidia_api_key_here
-# Optional if using Gemini fallback
-# GOOGLE_API_KEY=your_google_api_key_here
-```
-
-### 5. Setup Database
-```bash
-cd cultural_advisor
-python manage.py migrate
-python populate_db.py  # Optional: Populate the DB with initial cultural data
-```
-
-### 6. Run the Application
-```bash
-python manage.py runserver
-```
-Visit `http://127.0.0.1:8000/` in your browser.
+**Cultural Etiquette Advisor AI** is a professional web application designed to bridge cultural gaps and provide reliable etiquette advice for world travelers and business professionals. The system leverage a hybrid architecture: it uses a structured local database for country-specific etiquette and integrates the **Meta Llama 3.1** model (via NVIDIA AI) to provide nuanced, conversational responses based on real-time location detection.
 
 ---
 
-## 📁 Project Structure
+## Tech Stack
 
-```text
-├───cultural_advisor          # Main Django Project Root
-│   ├───advisor               # Main App (Logic, Views, Models)
-│   │   ├───static/advisor    # Frontend Assets (CSS, JS)
-│   │   ├───templates/advisor # HTML Templates
-│   │   ├───gemini_service.py # AI Integration Logic
-│   │   └───nlp_engine.py      # Location Detection Logic
-│   ├───cultural_advisor      # Project Settings
-│   │   └───settings.py
-│   └───manage.py
-├───.env                       # Environment Secrets (Ignored)
-└───.gitignore                 # Git Exclusions
-```
+- **Frontend**: HTML, Vanilla CSS (Glassmorphism), JavaScript (AJAX/Fetch)
+- **Backend**: Python (Django Framework)
+- **AI / LLM**: Meta Llama 3.1 (NVIDIA AI API), Google Gemini (Fallback)
+- **Database**: SQLite (Development)
+- **Core Features**: Location Extraction, Context-Aware Prompts, Chat History Management, Session Persistence, User Authentication
 
 ---
 
-## 📝 Usage Tips
-- **Be Specific**: Ask "What is the business etiquette in Japan?" for the most detailed response.
-- **General Queries**: The bot also handles general cultural questions like "How do I greet people in various cultures?"
-- **History**: Use the sidebar to browse through your previous chat sessions.
+## Screenshots
+
+### Login / Sign Up
+![Login Page](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/login_page.JPG?raw=true)
+![Signup Page](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/sign_up_page.JPG?raw=true)
+
+### Home Page
+![Home Page](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/home_page.JPG?raw=true)
+
+### AI Chat Interface
+![Chat Interface](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/chat_page.JPG?raw=true)
+![Chat Message](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/advisor_chatmessage.JPG?raw=true)
+
+### Bot Interaction
+![Bot is Thinking](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/bot_is_thinking.JPG?raw=true)
 
 ---
 
-## 🤝 Contributing
-Contributions are welcome! If you have suggestions for new features or localized etiquette data, please:
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## Key Features
+
+- **Contextual Awareness**: Automatically identifies mentioned countries and provides specific data on Greetings, Dining, and Business etiquette.
+- **Persistent Chat History**: Securely stores conversation sessions per user, allowing for multi-turn dialogue memory.
+- **Modern UI/UX**: Implements a sleek Glassmorphism design with a responsive sidebar for session management.
+- **Robust AI Integration**: Features intelligent retry logic, exponential backoff, and fallback systems for high availability.
+- **Secure Authentication**: Built-in Django user management, ensuring data privacy and individual chat histories.
 
 ---
 
-## 📄 License & Usage
-**All Rights Reserved.**
+## Project Purpose
 
-This repository is provided strictly for review by recruiters and hiring managers. No part of this project may be copied, redistributed, or used for any other purpose without the express written permission of the author.
+This project was developed as part of my final year BCA curriculum to showcase industrial-grade skills in full-stack development, AI API integration, and user-centric design. It demonstrates the ability to combine traditional relational databases with modern Large Language Models to solve real-world cross-cultural communication challenges.
 
 ---
 
-**Built with ❤️ for Global Understanding.**
+## Future Enhancements
+
+- **Voice Interaction**  
+  Implement Speech-to-Text and Text-to-Speech for a truly hands-free advisor experience.
+
+- **Interactive Maps**  
+  Integrate Leaflet or Google Maps to allow users to click on regions for instant cultural tips.
+
+- **Real-time Travel Alerts**  
+  Add API integrations for current travel advisories, currency exchange rates, and local news.
+
+---
+
+## Developer
+
+**Niranjana B**  
+Email: [niranjanab005@gmail.com](mailto:niranjanab005@gmail.com)  
+LinkedIn: [linkedin.com/in/niranjana-balasubramanian-1ab0a4251](https://linkedin.com/in/niranjana-balasubramanian-1ab0a4251)  
+GitHub: [github.com/niranjanabaalu](https://github.com/niranjanabaalu)
+
+---
+
+*This project reflects my commitment to building intelligent, scalable, and visually impactful applications using the latest web and AI technologies.*
