@@ -39,7 +39,6 @@ A sophisticated, location-aware AI chatbot developed as part of my BCA final yea
 
 ### AI Chat Interface
 ![Chat Interface](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/chat_page.JPG?raw=true)
-![Chat Message](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/advisor_chatmessage.JPG?raw=true)
 
 ### Bot Interaction
 ![Bot is Thinking](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/blob/main/bot_is_thinking.JPG?raw=true)
