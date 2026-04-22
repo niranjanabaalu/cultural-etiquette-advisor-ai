@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | AI Cultural Advisor</title>
+    <!-- Sunflower Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'advisor/css/style.css' %}">
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+    <div class="auth-container">
+        <div class="auth-card slide-up">
+            <h2>AI Etiquette</h2>
+            <p style="margin-bottom: 30px; opacity: 0.7; font-weight: 500;">Join us to explore cultures worldwide.</p>
+            
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}" id="{{ field.id_for_label }}" placeholder=" " required>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% if field.errors %}
+                    <small style="color: var(--highlight); font-weight: 600;">{{ field.errors|striptags }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                <button type="submit" class="auth-btn">Create Free Account</button>
+            </form>
+            
+            <div class="auth-footer">
+                Already have an account? <a href="{% url 'login' %}">Login</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

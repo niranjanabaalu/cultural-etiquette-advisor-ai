@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cultural Advisor</title>
+    <!-- Sunflower Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'advisor/css/style.css' %}">
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-globe-americas" style="font-size: 1.5rem;"></i>
+                <h2>Etiquette AI</h2>
+            </div>
+            <button class="new-chat-btn" onclick="startNewChat()">
+                <i class="fas fa-plus"></i>
+                New Chat
+            </button>
+            <div class="history-list" id="history-list">
+                <!-- History items will be loaded here via JS -->
+            </div>
+            <div style="padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto;">
+                <a href="{% url 'logout' %}" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.95rem; font-weight: 500; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <div class="header-left">
+                    <button class="toggle-sidebar" id="toggle-sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="logo">AI Cultural Advisor</div>
+                </div>
+                <div class="profile-section">
+                    <span style="font-size: 0.95rem; font-weight: 700; color: var(--moss);">{{ user.username }}</span>
+                    <div class="profile-icon">
+                        {{ user.username|make_list|first|upper }}
+                    </div>
+                </div>
+            </header>
+
+            <div class="chat-window" id="chat-window">
+                <!-- Messages will appear here -->
+                <div class="message bot">
+                    <div class="bubble">
+                        Hello! I'm your AI Cultural Etiquette Advisor. How can I help you today? You can ask me about greetings, dining, or traditions in any country!
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-container" style="padding: 0 40px;">
+                <div class="typing" id="typing-indicator">Bot is thinking...</div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-container glass">
+                    <input type="text" id="chat-input" placeholder="Ask about any culture..." autocomplete="off">
+                    <button class="send-btn" id="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const chatUrl = "{% url 'chat' %}";
+        const historyUrl = "{% url 'get_chat_history' %}";
+        const csrfToken = "{{ csrf_token }}";
+    </script>
+    <script src="{% static 'advisor/js/chat.js' %}"></script>
+</body>
+
+</html>
