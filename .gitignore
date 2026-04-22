@@ -1,0 +1,29 @@
+# Environment variables
+**/.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.venv/
+Node_modules/
+
+# Django
+db.sqlite3
+cultural_advisor/cultural_ai_db
+*.log
+local_settings.py
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

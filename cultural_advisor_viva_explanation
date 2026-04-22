@@ -1,0 +1,127 @@
+# AI Cultural Etiquette Advisor - Viva Examination Guide
+
+This guide provides a deep-dive into the internal workings of the "AI Cultural Etiquette Advisor System". It is designed to help you explain the technical logic and architecture to an examiner with confidence.
+
+---
+
+## 1. High-Level Working Flow
+The system follows a typical **Request-Response Cycle** enhanced with an **NLP Processing Layer**:
+
+1.  **User Input**: User types a query (e.g., "How to greet in Japan?") into the Chatbot UI.
+2.  **Frontend (JS)**: The [chat.js](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/static/advisor/js/chat.js) file captures the input and sends an asynchronous **POST request** (JSON format) to the Django backend.
+3.  **Django Backend (Views)**: The [chatbot](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/views.py#41-173) view in [views.py](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/views.py) receives the request, parses the JSON, and identifies the user.
+4.  **NLP Processing**: The backend calls the [nlp_engine.py](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/nlp_engine.py) to:
+    -   **Detect Intent**: What does the user want? (Greeting, Dining, etc.)
+    -   **Extract Location**: Which country is the user talking about?
+5.  **Knowledge Base Query**: Django ORM (Object-Relational Mapper) queries the [Etiquette](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/models.py#4-51) table in the SQLite database based on the extracted location.
+6.  **Response Generation**: The system dynamically selects data from the database based on the detected intent and formats it into a human-like response.
+7.  **UI Output**: The backend sends a JSON response back to the frontend, which updates the DOM (Document Object Model) to show the bot's message with a smooth typing animation.
+
+---
+
+## 2. Step-by-Step Execution (The "Behind-the-Scenes")
+When you press "Send":
+-   **JSON Parsing**: The backend uses `json.loads(request.body)` to convert the incoming string into a Python dictionary.
+-   **Session Initialization**: The system checks if a `session_id` exists. If not, it creates a new [ChatSession](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/models.py#52-60) entry in the database.
+-   **Persistence**: Before processing, the user's message is immediately saved to the [ChatMessage](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/models.py#61-70) model.
+-   **Logic Branching**: The [chatbot](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/views.py#41-173) view uses a series of `if-elif` blocks (mapping intents to database fields) to decide what information to fetch.
+
+---
+
+## 3. NLP Processing Logic
+The "Intelligence" of the system resides in [nlp_engine.py](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/nlp_engine.py):
+
+-   **Intent Detection**: We use a **Keyword Mapping** strategy. I defined an `intent_map` dictionary where each intent (e.g., "dining") has a list of associated keywords (e.g., "eat", "food", "manners"). The system loops through these to find a match.
+-   **Location Extraction**:
+    -   **Primary (Hard-matching)**: The system checks a `KNOWN_LOCATIONS` list for exact matches.
+    -   **Secondary (spaCy NER)**: If no hard match is found, we use **spaCy's Named Entity Recognition (NER)**. The model looks for entities labeled `GPE` (Geopolitical Entity) or `LOC` (Location).
+-   **Fallback**: If no location is found in the current message, the system looks at the **Session Context**.
+
+---
+
+## 4. Context Memory (Session Management)
+One key feature of an AI assistant is "remembering" what was just said.
+-   **How it works**: We use `request.session['last_location']`.
+-   **Example**:
+    -   User: "Tell me about Japan." (System saves "Japan" to session).
+    -   User: "What should I wear there?" (System sees no location, checks session, finds "Japan", and provides Japanese dress code).
+
+---
+
+## 5. Database & Knowledge Base
+The system uses the **Django ORM** to treat database rows as Python objects.
+-   **Knowledge Base ([Etiquette](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/models.py#4-51) Model)**: This is a robust table containing fields like `greeting_word`, `dining_etiquette`, `dos`, and `donts` for dozens of countries.
+-   **Filtering**: We use `Etiquette.objects.filter(country__icontains=location).first()` for flexible searching (e.g., "japan" matches "Japan").
+
+---
+
+## 6. Response Generation Logic
+We don't just dump database text. We use **Template String Formatting**:
+```python
+response = f"In {data.country}, the common greeting is '{data.greeting_word}'."
+if data.greeting_gesture:
+    response += f" This is often accompanied by {data.greeting_gesture}."
+```
+This ensures the response feels like a conversation, not a database dump.
+
+---
+
+## 7. Advanced Features Internals
+-   **Comparison**: [extract_multiple_locations](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/nlp_engine.py#105-125) finds two countries, fetches both objects, and concatenates their data for a side-by-side view.
+-   **Mistake Detection**: The system has "Trigger Logic" for specific cultural faux pas (e.g., checking if "tip" and "Japan" are in the same context to warn that tipping is rude there).
+-   **Recommendation**: If the user asks for suggestions, the system performs a `[:5]` slice on the [Etiquette](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/models.py#4-51) table and presents curiosity-piquing snippets.
+
+---
+
+## 8. Frontend-Backend Communication
+-   **Fetch API**: We use `fetch('/chat/', { method: 'POST', ... })`. This allows the page to update without reloading (Single Page Application feel).
+-   **Typing Animation**: JS calculates the response length or uses a simple `setTimeout` to simulate the bot "thinking" and "typing," improving the "Human-AI" interaction feel.
+
+---
+
+## 9. Why is this "AI"?
+-   **Expert System Category**: This is a **Knowledge-Based AI**. It mimics a human expert using a structured knowledge base and a set of reasoning rules (NLP logic).
+-   **Difference**:
+    -   **ML-based AI** (like ChatGPT) predicts the next word based on patterns.
+    -   **Rule-based AI** (our system) uses logical deduction and NLP to provide *accurate, verified* information from a dedicated knowledge source. This prevents "hallucinations."
+
+---
+
+## 10. 10 Possible Viva Questions & Answers
+
+1.  **Q: Why did you use Django for this project?**
+    *   **A:** Django provides a robust "Batteries Included" framework with built-in Authentication, ORM for database management, and excellent security features like CSRF protection.
+
+2.  **Q: How does the system handle a country not in your database?**
+    *   **A:** The system has a fallback mechanism in [views.py](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/views.py). If `data` is `None`, it politely informs the user that information for that specific location is not yet available, rather than crashing.
+
+3.  **Q: What is spaCy and why use it over NLTK?**
+    *   **A:** spaCy is a modern industrial-strength NLP library. I used it for its efficient **Named Entity Recognition (NER)** to automatically identify countries and regions from user sentences.
+
+4.  **Q: How do you prevent CSRF (Cross-Site Request Forgery) attacks in your AJAX calls?**
+    *   **A:** I pass the `csrfToken` from Django's template engine to [chat.js](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/static/advisor/js/chat.js) and include it in the `X-CSRFToken` header of every `fetch` request.
+
+5.  **Q: What happens if the user query has no clear intent?**
+    *   **A:** The [nlp_engine.py](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/nlp_engine.py) returns a "general" intent, and the backend responds with a helpful menu of topics the user can ask about, guiding the conversation back on track.
+
+6.  **Q: Tell me about the database schema.**
+    *   **A:** We have three main tables: [Etiquette](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/models.py#4-51) (Knowledge Base), [ChatSession](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/models.py#52-60) (Grouping messages), and [ChatMessage](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/models.py#61-70) (Storing the actual conversation history with timestamps and roles).
+
+7.  **Q: How is the 'Glassmorphism' effect achieved in CSS?**
+    *   **A:** It uses `backdrop-filter: blur()`, a semi-transparent background color (`rgba`), and a subtle border to create a frosted-glass aesthetic.
+
+8.  **Q: Is your NLP local or cloud-based?**
+    *   **A:** It is **local**. The spaCy model (`en_core_web_sm`) is loaded into server memory, which ensures fast processing and data privacy.
+
+9.  **Q: How does the 'Comparison' feature work internally?**
+    *   **A:** The NLP engine extracts two entities. The view then executes two separate database queries and uses Python string manipulation to merge the results into a comparative response.
+
+10. **Q: How would you scale this project?**
+    *   **A:** I would move the Knowledge Base to **PostgreSQL**, integrate a **Transformer-based model** (like BERT) for even better intent detection, and add a **Vector Database** to handle unstructured cultural documents.
+
+---
+
+## Tips for the Examination:
+-   **Be Specific**: Instead of saying "it finds the country," say "the system uses NER to identify Geopolitical Entities."
+-   **Show the Code**: If asked about logic, mention the `if-else` branching in [views.py](file:///d:/Niranj/cultural-advisor-ai/cultural_advisor/advisor/views.py).
+-   **Stay Calm**: You built a system that handles **state (sessions)**, **logic (NLP)**, and **persistence (DB)**. That is a solid engineering feat!
