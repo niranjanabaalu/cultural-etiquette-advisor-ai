@@ -1,6 +1,8 @@
 # 🌏 Cultural Etiquette Advisor AI
 
-An intelligent, location-aware chatbot built with **Django** and powered by **LLMs** (Llama 3.1 via NVIDIA AI / Google Gemini). This advisor provides professional, reliable, and context-specific etiquette advice for world travelers, business professionals, and cultural enthusiasts.
+**⚠️ For Evaluation / Portfolio Purposes Only ⚠️**
+
+This project is a personal portfolio piece designed for technical assessment and recruiter review. The source code and assets are not licensed for public use, redistribution, or commercial deployment.
 
 ---
 
@@ -105,8 +107,10 @@ Contributions are welcome! If you have suggestions for new features or localized
 
 ---
 
-## 📄 License
-Distributed under the MIT License. See `LICENSE` for more information.
+## 📄 License & Usage
+**All Rights Reserved.**
+
+This repository is provided strictly for review by recruiters and hiring managers. No part of this project may be copied, redistributed, or used for any other purpose without the express written permission of the author.
 
 ---
 
