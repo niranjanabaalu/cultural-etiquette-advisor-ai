@@ -6,7 +6,7 @@
 
 ---
 
-A sophisticated, location-aware AI chatbot developed as part of my BCA final year mini project using Django and advanced LLM integration.
+A technical showcase of a hybrid AI architecture that combines localized cultural etiquette databases with advanced Generative AI to provide real-time, location-specific travel and business advice
 
 ![Project Banner](https://github.com/niranjanabaalu/cultural-etiquette-advisor-ai/raw/main/front_image.png)
 
