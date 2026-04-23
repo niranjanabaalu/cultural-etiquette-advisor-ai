@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cultural_advisor.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cultural_advisor.cultural_advisor.settings')
 
 application = get_asgi_application()

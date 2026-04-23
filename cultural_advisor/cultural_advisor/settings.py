@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cultural_advisor.wsgi.application'
+WSGI_APPLICATION = 'cultural_advisor.cultural_advisor.wsgi.application'
 
 
 # Database Configuration
